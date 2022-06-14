@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Component">
+      <UniqueIdentifier>{700e2a95-3990-454d-af68-06d9bec6f30b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{a08d353a-9ee6-4c71-a2d1-35fe6635cad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Miscs">
+      <UniqueIdentifier>{724079ac-42fa-4db2-a663-62115f9ac50a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Src\Component\ComponentInfo.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Miscs\Utility.h">
+      <Filter>Miscs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Miscs\Includes.h">
+      <Filter>Miscs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Component\ComponentManager.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Component\ComponentManager.hpp">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Entity\Entity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Entity\EntityManager.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Entity\Archetype.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Entity\Pool.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Entity\Pool.hpp">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Entity\Bits.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Entity\Bits.hpp">
+      <Filter>Entity</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
