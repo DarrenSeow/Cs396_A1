@@ -1,7 +1,12 @@
+#include "Pool.h"
 #pragma once
 
 namespace Archetype
 {
+    inline Pool::Pool(std::span<const Component::ComponentInfo* const> _infos)
+    {
+        Initialize(_infos);
+    }
     inline Pool::~Pool() noexcept
     {
         if (!m_componentPools.front()) return;

@@ -53,7 +53,7 @@ struct Rotation
 {
     float m_rz = 45.f;
 };
-
+void fn() {};
 int main()
 {
 	std::cout << Component::ComponentInfo_v<Rotation>.m_uid << std::endl;
@@ -77,9 +77,7 @@ int main()
             &Component::ComponentInfo_v< Position >
         };
 
-        Archetype::Pool poolInst;
-        
-        poolInst.Initialize(std::span< info_type >{ arr.data(), arr.size()});
+        Archetype::Pool poolInst{ std::span< info_type >{ arr.data(), arr.size()} };
         
 
         const auto index = poolInst.Append();
@@ -108,5 +106,9 @@ int main()
 
         ECS_Tools::Bits bit;
         bit.AddFromComponents<Scale>();
+
+        Archetype::Archetype archetype;
+        
+        archetype.CreateEntity([]() {});
     }
 }

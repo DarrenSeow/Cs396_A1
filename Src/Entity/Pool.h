@@ -10,6 +10,7 @@ namespace Archetype
 		std::array<std::byte*, ECS_Utility::max_num_of_component_per_entity> m_componentPools{};
 	public:
 		Pool() noexcept = default;
+		Pool(std::span<const Component::ComponentInfo* const> _infos);
 		Pool(Pool&) = delete;
 		~Pool() noexcept;
 

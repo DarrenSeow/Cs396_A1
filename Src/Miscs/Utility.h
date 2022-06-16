@@ -8,6 +8,9 @@ namespace ECS_Utility
 	using ComponentUID	= std::uint64_t;
 	using ComponentSize = std::uint64_t;
 	
+	using EmptyLambda = decltype([]() {});
+
+
 	constexpr auto virtual_page_size = 4096;
 
 	constexpr auto invalid_component_info_value = std::numeric_limits<ComponentUID>::max();

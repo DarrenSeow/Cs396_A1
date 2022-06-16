@@ -15,17 +15,16 @@
 #include <algorithm>
 #include <tuple>
 #include <concepts>
+
 #include "Utility.h"
+#include "Tools.h"
 
 #include "..\Component\ComponentInfo.h"
 
 #include "..\Component\ComponentManager.h"
+
 #include "..\Entity\Bits.h"
-
-#include "..\Entity\Entity.h"
-
-#include "..\Entity\Archetype.h"
 #include "..\Entity\Pool.h"
+#include "..\Entity\Archetype.h"
+#include "..\Entity\Entity.h"
 #include "..\Entity\EntityManager.h"
-
-#include "Tools.h"

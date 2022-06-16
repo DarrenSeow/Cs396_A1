@@ -38,8 +38,8 @@ namespace Entity
 	{
 		//archetype needed
 		Archetype::Archetype* m_archetype;
-		int index;
-		Entity::Validation validation;
+		int m_index;
+		Entity::Validation m_validation;
 	};
 }
 
