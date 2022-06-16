@@ -37,6 +37,7 @@ namespace Entity
 	struct EntityRecord final
 	{
 		//archetype needed
+		Archetype::Archetype* m_archetype;
 		int index;
 		Entity::Validation validation;
 	};

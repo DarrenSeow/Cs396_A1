@@ -13,7 +13,8 @@
 #include <assert.h>
 #include <memoryapi.h>
 #include <algorithm>
-
+#include <tuple>
+#include <concepts>
 #include "Utility.h"
 
 #include "..\Component\ComponentInfo.h"
@@ -27,3 +28,4 @@
 #include "..\Entity\Pool.h"
 #include "..\Entity\EntityManager.h"
 
+#include "Tools.h"
