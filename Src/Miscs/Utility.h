@@ -1,6 +1,7 @@
  #pragma once
 namespace ECS_Utility
 {
+	using emptylambda = decltype([]() {});
 	using EntityID		= std::uint64_t;
 	using EntityIndex	= std::uint32_t;
 	using ValidEntityID = std::uint32_t;

@@ -147,6 +147,7 @@
     <ClInclude Include="..\..\Src\Component\ComponentManager.hpp" />
     <ClInclude Include="..\..\Src\Entity\Archetype.h" />
     <ClInclude Include="..\..\Src\Entity\Archetype.hpp" />
+    <ClInclude Include="..\..\Src\Entity\EntityManager.hpp" />
     <ClInclude Include="..\..\Src\Entity\Pool.h" />
     <ClInclude Include="..\..\Src\Entity\Bits.h" />
     <ClInclude Include="..\..\Src\Entity\Bits.hpp" />
@@ -154,6 +155,8 @@
     <ClInclude Include="..\..\Src\Entity\EntityManager.h" />
     <ClInclude Include="..\..\Src\Entity\Pool.hpp" />
     <ClInclude Include="..\..\Src\Miscs\Includes.h" />
+    <ClInclude Include="..\..\Src\Miscs\Query.h" />
+    <ClInclude Include="..\..\Src\Miscs\Query.hpp" />
     <ClInclude Include="..\..\Src\Miscs\Tools.h" />
     <ClInclude Include="..\..\Src\Miscs\Utility.h" />
   </ItemGroup>

@@ -57,5 +57,14 @@
     <ClInclude Include="..\..\Src\Entity\Archetype.hpp">
       <Filter>Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Src\Miscs\Query.h">
+      <Filter>Miscs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Miscs\Query.hpp">
+      <Filter>Miscs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\Entity\EntityManager.hpp">
+      <Filter>Entity</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

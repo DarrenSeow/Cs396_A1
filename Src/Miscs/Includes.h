@@ -24,6 +24,7 @@
 #include "..\Component\ComponentManager.h"
 
 #include "..\Entity\Bits.h"
+#include "Query.h"
 #include "..\Entity\Pool.h"
 #include "..\Entity\Archetype.h"
 #include "..\Entity\Entity.h"

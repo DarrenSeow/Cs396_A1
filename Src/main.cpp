@@ -60,14 +60,17 @@ int main()
 
 	std::unique_ptr<Component::ComponentManager> m_compMgr = std::make_unique<Component::ComponentManager>();
 
+    m_compMgr->RegisterComponents<Entity::Entity>();
+    std::cout << Component::ComponentInfo_v<Entity::Entity>.m_uid << std::endl;
 	m_compMgr->RegisterComponents<Rotation, Scale, Position>();
+
 	std::cout << Component::ComponentInfo_v<Rotation>.m_uid << std::endl;
 	
 	std::cout << Component::ComponentInfo_v<Scale>.m_uid << std::endl;
     
     {
         std::cout << "\033[1m\033[33m" << "\n----- START TEST 02 -----\n" << "\033[0m\033[37m" << std::endl;
-        using info_type = const Component::ComponentInfo* const;
+        using info_type = const Component::ComponentInfo*;
         constexpr auto info_size_v = 3;
 
         std::array< info_type, info_size_v> arr
@@ -76,7 +79,7 @@ int main()
             &Component::ComponentInfo_v< Scale >,
             &Component::ComponentInfo_v< Position >
         };
-
+        auto testspan = std::span< info_type >{ arr.data(), arr.size() };
         Archetype::Pool poolInst{ std::span< info_type >{ arr.data(), arr.size()} };
         
 
@@ -106,9 +109,16 @@ int main()
 
         ECS_Tools::Bits bit;
         bit.AddFromComponents<Scale>();
+        std::unique_ptr<Entity::EntityManager> entMgr = std::make_unique<Entity::EntityManager>();
 
-        Archetype::Archetype archetype;
+        Archetype::Archetype archetype{ testspan ,bit, *entMgr};
         
-        archetype.CreateEntity([]() {});
+       auto entity = entMgr->CreateEntity([]() {});
+
+       std::cout << entity.m_uid << std::endl;
+       auto entity1 = entMgr->CreateEntity([]() {});
+
+       std::cout << entity1.m_uid << std::endl;
+       // archetype.CreateEntity();
     }
 }

@@ -1,8 +1,18 @@
 namespace Archetype
 {
-	template<Tools::is_void_Fn CallbackType>
-	void Archetype::CreateEntity(CallbackType&& _func) noexcept
+	Archetype::Archetype(const std::span<const Component::ComponentInfo* const >& _infos,	const ECS_Tools::Bits& _bits,
+		 Entity::EntityManager& _entityMgr) noexcept
+		:	
+		m_entityMgr{_entityMgr},
+		m_bits{_bits},
+		m_infoData{},
+		m_componentPool{_infos}
+
 	{
-		_func();
+
+	}
+	ECS_Utility::EntityIndex Archetype::AppendEntity() noexcept
+	{
+		return m_componentPool.Append();
 	}
 }

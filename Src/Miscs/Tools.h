@@ -24,7 +24,7 @@ namespace Tools
 		{
 			using ReturnType_t = ReturnType;
 			using Class_t = Class;
-			using Parameters_t = std::tuple<Args...>;
+			using Args_Tuple = std::tuple<Args...>;
 
 			static constexpr auto args_Count = sizeof...(Args);
 		};
@@ -87,5 +87,12 @@ namespace Tools
 	concept is_void_Fn = requires
 	{
 		{ std::is_same_v<typename Fn_Traits<CallBackType>::ReturnType_t, void> };
-	};
+	}; 
+
+	template<typename ... Args>
+	constexpr auto make_null_tuple_from_args_v = static_cast<std::tuple<Args...>*>(nullptr);
+
+	template<typename Args>
+	constexpr auto cast_null_tuple_v = static_cast<Args*>(nullptr);
+
 }
