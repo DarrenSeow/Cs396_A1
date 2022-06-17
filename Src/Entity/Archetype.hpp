@@ -15,4 +15,10 @@ namespace Archetype
 	{
 		return m_componentPool.Append();
 	}
+
+	template<typename Component>
+	inline Component& Archetype::GetComponent(const ECS_Utility::EntityIndex _index) noexcept
+	{
+		return m_componentPool.GetComponent<Component>(_index);
+	}
 }

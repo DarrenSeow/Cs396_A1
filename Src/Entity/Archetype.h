@@ -27,6 +27,9 @@ namespace Archetype
 		void UpdateStructuralChange() noexcept;
 		void DestroyEntity(Entity::Entity _entity) noexcept;
 
+		template<typename Component>
+		Component& GetComponent(const ECS_Utility::EntityIndex _index) noexcept;
+
 		Entity::EntityManager& m_entityMgr;
 		ECS_Tools::Bits m_bits{};
 		std::vector<Entity::Entity> m_entityToDelete{};

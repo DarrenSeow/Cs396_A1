@@ -113,11 +113,18 @@ int main()
 
         Archetype::Archetype archetype{ testspan ,bit, *entMgr};
         
-       auto entity = entMgr->CreateEntity([]() {});
-
+       auto entity = entMgr->CreateEntity([](Position& pos) {pos.pos.x = 10; std::cout << pos.pos.x << std::endl; });
        std::cout << entity.m_uid << std::endl;
-       auto entity1 = entMgr->CreateEntity([]() {});
+       Query::Query query;
+       query.m_must.AddFromComponents<Entity::Entity>();
+       auto archetypes = entMgr->Search<Scale>();
+       for (auto& archetype : archetypes)
+       {
+           std::cout << archetype->m_bits.m_bits[0] << std::endl;
+       }
+       auto entity1 = entMgr->CreateEntity([](Position& pos) {});
 
+       entMgr->FindEntity(entity, [](Position& pos) {std::cout << pos.pos.x << std::endl; });
        std::cout << entity1.m_uid << std::endl;
        // archetype.CreateEntity();
     }

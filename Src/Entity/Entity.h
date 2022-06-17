@@ -13,6 +13,7 @@ namespace Entity
 				ECS_Utility::ValidEntityID m_generation : 31,
 											m_isAlive : 1;
 			};
+			constexpr bool operator == (const Validation& V) const noexcept { return m_validateID == V.m_validateID; }
 		};
 		ECS_Utility::EntityID m_uid;
 		struct
@@ -38,7 +39,7 @@ namespace Entity
 	{
 		//archetype needed
 		Archetype::Archetype* m_archetype;
-		int m_index;
+		ECS_Utility::EntityIndex m_index;
 		Entity::Validation m_validation;
 	};
 }
