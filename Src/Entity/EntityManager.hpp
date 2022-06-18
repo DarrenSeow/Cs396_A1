@@ -50,7 +50,7 @@ namespace Entity
 	{
 		auto& entry = m_entityRecords[_entity.m_index];
 		++entry.m_validation.m_generation;
-		entry.m_validation.m_isAlive = false;
+		entry.m_validation.m_isDead = false;
 		entry.m_index = m_emptyHead;
 		m_emptyHead = _entity.m_index;
 	}
@@ -59,7 +59,7 @@ namespace Entity
 		auto& entry = m_entityRecords[_entity.m_index];
 		m_entityRecords[_swappedentity.m_index].m_index = entry.m_index;
 		++entry.m_validation.m_generation;
-		entry.m_validation.m_isAlive = false;
+		entry.m_validation.m_isDead = false;
 		entry.m_index = m_emptyHead;
 		m_emptyHead = _entity.m_index;
 	}
@@ -73,7 +73,7 @@ namespace Entity
 	}
 	inline void EntityManager::DeleteEntity(Entity& _entity) noexcept
 	{
-		assert(_entity.IsAlive() == false);
+		assert(_entity.IsDead() == false);
 		auto& info = GetEntityDetails(_entity);
 		assert(info.m_validation == _entity.m_validation);
 		info.m_archetype->DestroyEntity(_entity);
@@ -297,7 +297,8 @@ namespace Entity
 		requires  std::is_same_v<void, typename Tools::Fn_Traits<CallBackType>::ReturnType_t>
 	inline bool EntityManager::FindEntity(Entity _ent, CallBackType&& Function) const noexcept
 	{
-		if (_ent.IsAlive()) return false;
+		if (_ent.IsDead()) return false;
+		
 
 		auto& record = m_entityRecords[_ent.m_index];
 
@@ -313,6 +314,7 @@ namespace Entity
 			return true;
 		}
 		return false;
+		
 	}
 	template<typename ...Components>
 	inline std::vector<Archetype::Archetype*> EntityManager::Search() const noexcept

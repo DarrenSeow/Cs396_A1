@@ -30,7 +30,9 @@
 #include "..\Entity\Entity.h"
 #include "..\Entity\EntityManager.h"
 
-
+#include "..\System\System.h"
+#include "..\System\SystemManager.h"
+#include "..\ECSManager.h"
 //function definitions
 #include "Query.hpp"
 #include "..\Component\ComponentManager.hpp"
@@ -38,4 +40,7 @@
 #include "..\Entity\Pool.hpp"
 #include "..\Entity\Archetype.hpp"
 #include "..\Entity\EntityManager.hpp"
+#include "..\System\System.hpp"
+#include "..\System\SystemManager.hpp"
+#include "..\ECSManager.hpp"
 

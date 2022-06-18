@@ -43,8 +43,8 @@ namespace Archetype
 
 	inline void Archetype::DestroyEntity(Entity::Entity& _entity) noexcept
 	{
-		assert(_entity.IsAlive() == false);
-		_entity.m_validation.m_isAlive = m_entityMgr.m_entityRecords[_entity.m_index].m_validation.m_isAlive = true;
+		assert(_entity.IsDead() == false);
+		_entity.m_validation.m_isDead = m_entityMgr.m_entityRecords[_entity.m_index].m_validation.m_isDead = true;
 		m_entityToDelete.push_back(_entity);
 
 		if (0 == m_processRef)

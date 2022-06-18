@@ -145,6 +145,8 @@
     <ClInclude Include="..\..\Src\Component\ComponentInfo.h" />
     <ClInclude Include="..\..\Src\Component\ComponentManager.h" />
     <ClInclude Include="..\..\Src\Component\ComponentManager.hpp" />
+    <ClInclude Include="..\..\Src\ECSManager.h" />
+    <ClInclude Include="..\..\Src\ECSManager.hpp" />
     <ClInclude Include="..\..\Src\Entity\Archetype.h" />
     <ClInclude Include="..\..\Src\Entity\Archetype.hpp" />
     <ClInclude Include="..\..\Src\Entity\EntityManager.hpp" />
@@ -159,6 +161,10 @@
     <ClInclude Include="..\..\Src\Miscs\Query.hpp" />
     <ClInclude Include="..\..\Src\Miscs\Tools.h" />
     <ClInclude Include="..\..\Src\Miscs\Utility.h" />
+    <ClInclude Include="..\..\Src\System\System.h" />
+    <ClInclude Include="..\..\Src\System\System.hpp" />
+    <ClInclude Include="..\..\Src\System\SystemManager.h" />
+    <ClInclude Include="..\..\Src\System\SystemManager.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

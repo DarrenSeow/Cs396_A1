@@ -10,6 +10,9 @@
     <Filter Include="Miscs">
       <UniqueIdentifier>{724079ac-42fa-4db2-a663-62115f9ac50a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{f802c91b-7448-42a1-aae6-c81bb42cb57d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Src\main.cpp" />
@@ -66,5 +69,19 @@
     <ClInclude Include="..\..\Src\Entity\EntityManager.hpp">
       <Filter>Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Src\System\System.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\ECSManager.h" />
+    <ClInclude Include="..\..\Src\System\SystemManager.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\System\System.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\System\SystemManager.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\ECSManager.hpp" />
   </ItemGroup>
 </Project>
