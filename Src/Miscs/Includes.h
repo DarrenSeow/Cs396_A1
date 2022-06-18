@@ -29,3 +29,13 @@
 #include "..\Entity\Archetype.h"
 #include "..\Entity\Entity.h"
 #include "..\Entity\EntityManager.h"
+
+
+//function definitions
+#include "Query.hpp"
+#include "..\Component\ComponentManager.hpp"
+#include "..\Entity\Bits.hpp"
+#include "..\Entity\Pool.hpp"
+#include "..\Entity\Archetype.hpp"
+#include "..\Entity\EntityManager.hpp"
+

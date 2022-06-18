@@ -105,6 +105,10 @@ namespace Archetype
 
 
     }
+    inline constexpr ECS_Utility::EntityIndex Pool::Size()  const noexcept
+    {
+        return m_size;
+    }
     inline void Pool::Initialize(std::span<const Component::ComponentInfo* const> _span) noexcept
     {
         //assert if the size contains too much for the archetypePool

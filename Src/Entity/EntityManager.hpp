@@ -1,4 +1,4 @@
-#include "EntityManager.h"
+
 namespace Entity
 {
 	inline Archetype::Archetype& EntityManager::GetOrCreateArchetype(std::span < const Component::ComponentInfo* const> _span) noexcept
@@ -46,6 +46,23 @@ namespace Entity
 		};
 
 	}
+	inline void EntityManager::SystemDeleteEntity(Entity _entity) noexcept
+	{
+		auto& entry = m_entityRecords[_entity.m_index];
+		++entry.m_validation.m_generation;
+		entry.m_validation.m_isAlive = false;
+		entry.m_index = m_emptyHead;
+		m_emptyHead = _entity.m_index;
+	}
+	inline void EntityManager::SystemDeleteEntity(Entity _entity, Entity& _swappedentity) noexcept
+	{
+		auto& entry = m_entityRecords[_entity.m_index];
+		m_entityRecords[_swappedentity.m_index].m_index = entry.m_index;
+		++entry.m_validation.m_generation;
+		entry.m_validation.m_isAlive = false;
+		entry.m_index = m_emptyHead;
+		m_emptyHead = _entity.m_index;
+	}
 	inline EntityManager::EntityManager() noexcept
 	{
 		//linked list of empty entries
@@ -53,6 +70,13 @@ namespace Entity
 		{
 			m_entityRecords[i].m_index = i + 1;
 		}
+	}
+	inline void EntityManager::DeleteEntity(Entity& _entity) noexcept
+	{
+		assert(_entity.IsAlive() == false);
+		auto& info = GetEntityDetails(_entity);
+		assert(info.m_validation == _entity.m_validation);
+		info.m_archetype->DestroyEntity(_entity);
 	}
 	inline std::vector<Archetype::Archetype*> EntityManager::Search(std::span<const Component::ComponentInfo* const> _types) const noexcept
 	{
@@ -71,7 +95,7 @@ namespace Entity
 				archetypesFound.push_back(m_archetypes[index].get());
 			}
 		}
-		return std::move(archetypesFound);
+		return archetypesFound;
 	}
 	inline std::vector<Archetype::Archetype*> EntityManager::Search(const Query::Query& _query) const noexcept
 	{
@@ -85,7 +109,7 @@ namespace Entity
 				archetypesFound.push_back(m_archetypes[index].get());
 			}
 		}
-		return std::move(archetypesFound);
+		return archetypesFound;
 	}
 	inline const EntityRecord& EntityManager::GetEntityDetails(Entity& _ent) noexcept
 	{
@@ -97,6 +121,7 @@ namespace Entity
 	template<typename... Components>
 	inline Archetype::Archetype& EntityManager::GetOrCreateArchetype() noexcept
 	{
+		
 		static_assert(((std::is_same_v<std::decay_t<Components>, Entity> == false)&&...));
 
 		static constexpr auto ComponentList = std::array{ &Component::ComponentInfo_v<Entity>,&Component::ComponentInfo_v<Components>... };
@@ -104,7 +129,135 @@ namespace Entity
 		return GetOrCreateArchetype(ComponentList);
 	}
 
-	template<Tools::is_void_Fn CallBackType>
+	//template<Tools::is_bool_fn Function>
+	template<typename Function>
+		requires std::is_same_v<bool, typename Tools::Fn_Traits<Function>::ReturnType_t>&& Tools::has_functor<Function>
+	inline void EntityManager::Foreach(const std::vector<Archetype::Archetype*>& _archetypeList, Function&& _func) const noexcept
+	{
+
+		using func_traits = Tools::Fn_Traits<Function>;
+
+		for (const auto& archetype : _archetypeList)
+		{
+			const auto& pool = archetype->m_componentPool;
+
+			auto CachePointers = [&]<typename...Components>(std::tuple<Components...>*) constexpr noexcept
+			{
+				return std::array
+				{
+					[&] <typename T>(std::tuple<T>*) constexpr noexcept
+					{
+						const auto index = pool.FindComponentIndexFromUID(Component::ComponentInfo_v<T>.m_uid);
+						if constexpr (std::is_pointer_v<T>) return (index < 0) ? nullptr : pool.m_componentPools[index];
+						else								return pool.m_componentPools[index];
+					}(Tools::make_null_tuple_from_args_v<Components>)...
+				};
+			}(Tools::cast_null_tuple_v<func_traits::Args_Tuple>);
+
+			bool skip = false;
+
+			archetype->AccessGuard([&]
+				{
+					for (auto i = pool.Size(); i; --i)
+					{
+						if ([&]<typename ... Components>(std::tuple<Components...>*) constexpr noexcept
+						{
+							return _func([&]<typename T>(std::tuple<T>*) constexpr noexcept ->T
+							{
+								auto& myPointer = CachePointers[Tools::TupleToIndex_v<T, Components...>];
+								if constexpr(std::is_pointer_v<T>)
+								{
+									if (myPointer == nullptr)
+									{
+										return reinterpret_cast<T>(nullptr);
+									}
+								}
+								auto p = myPointer;
+								myPointer += sizeof(std::decay_t<T>);
+								if constexpr (std::is_pointer_v<T>)
+								{
+									return reinterpret_cast<T>(p);
+								}
+								else
+								{
+									return reinterpret_cast<T>(*p);
+								}
+							}(Tools::make_null_tuple_from_args_v<Components>)...);
+						}(Tools::cast_null_tuple_v<func_traits::Args_Tuple>))
+						{
+							skip = true;
+							break;
+						}
+					}
+				});
+			if (skip) break;
+		}
+	}
+
+	//template<Tools::is_void_Fn Function>
+	template<typename Function>
+		requires  std::is_same_v<void, typename Tools::Fn_Traits<Function>::ReturnType_t>&& Tools::has_functor<Function>
+	inline void EntityManager::Foreach(const std::vector<Archetype::Archetype*> _archetypeList, Function&& _func) const noexcept
+	{
+		using func_traits = Tools::Fn_Traits<Function>;
+
+		for (const auto& archetype : _archetypeList)
+		{
+			const auto& pool = archetype->m_componentPool;
+
+			auto CachePointers = [&]<typename...Components>(std::tuple<Components...>*) constexpr noexcept
+			{
+				return std::array
+				{
+					[&] <typename T>(std::tuple<T>*) constexpr noexcept
+					{
+						const auto index = pool.FindComponentIndexFromUID(Component::ComponentInfo_v<T>.m_uid);
+						if constexpr (std::is_pointer_v<T>) return (index < 0) ? nullptr : pool.m_componentPools[index];
+						else								return pool.m_componentPools[index];
+					}(Tools::make_null_tuple_from_args_v<Components>)...
+				};
+			}(Tools::cast_null_tuple_v<func_traits::Args_Tuple>);
+
+			bool skip = false;
+
+			archetype->AccessGuard([&]
+				{
+					for (ECS_Utility::EntityIndex i = pool.Size(); i; --i)
+					{
+						[&]<typename ... Components>(std::tuple<Components...>*) constexpr noexcept
+						{
+							return _func([&]<typename T>(std::tuple<T>*) constexpr noexcept ->T
+							{
+								auto& myPointer = CachePointers[Tools::TupleToIndex_v<T, Components...>];
+								if constexpr(std::is_pointer_v<T>)
+								{
+									if (myPointer == nullptr)
+									{
+										return reinterpret_cast<T>(nullptr);
+									}
+								}
+								auto p = myPointer;
+								myPointer += sizeof(std::decay_t<T>);
+								if constexpr (std::is_pointer_v<T>)
+								{
+									return reinterpret_cast<T>(p);
+								}
+								else
+								{
+									return reinterpret_cast<T>(*p);
+								}
+							}(Tools::make_null_tuple_from_args_v<Components>)...);
+						}(Tools::cast_null_tuple_v<func_traits::Args_Tuple>);
+
+					}
+				});
+			
+		}
+	}
+
+	//template<Tools::is_void_Fn CallBackType>
+	template<typename CallBackType>
+		requires  std::is_same_v<void, typename Tools::Fn_Traits<CallBackType>::ReturnType_t>
 	inline Entity EntityManager::CreateEntity(CallBackType&& _function) noexcept
 	{
 		using func_traits = Tools::Fn_Traits<CallBackType>;
@@ -126,7 +279,22 @@ namespace Entity
 			return entity;
 		}(Tools::cast_null_tuple_v<func_traits::Args_Tuple>);
 	}
-	template<Tools::is_void_Fn CallBackType>
+	template<typename ...Components>
+	inline Entity EntityManager::CreateEntity() noexcept
+	{
+		auto & archetype = GetOrCreateArchetype<Components...>();
+
+		assert(archetype.m_bits.GetBit(Component::ComponentInfo_v<Components>.m_uid) && ...);
+		//add entity to its respective archetype
+		const auto EntityIndexInPool = archetype.AppendEntity();
+		//add entity to the global pool
+
+		const auto entity = AllocNewEntity(EntityIndexInPool, archetype);
+		return entity;
+	}
+	//template<Tools::is_void_Fn CallBackType>
+	template<typename CallBackType>
+		requires  std::is_same_v<void, typename Tools::Fn_Traits<CallBackType>::ReturnType_t>
 	inline bool EntityManager::FindEntity(Entity _ent, CallBackType&& Function) const noexcept
 	{
 		if (_ent.IsAlive()) return false;

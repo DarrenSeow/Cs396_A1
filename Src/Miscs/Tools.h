@@ -32,7 +32,7 @@ namespace Tools
 
 	}
 	template<typename T, typename ...Args>
-	constexpr size_t TupleToIndex_v = TupleToIndex<T, std::tuple<Args...>>::value;
+	constexpr size_t TupleToIndex_v = details::TupleToIndex<T, std::tuple<Args...>>::value;
 
 	template<typename NonFunction>
 	struct Fn_Traits;
@@ -86,9 +86,24 @@ namespace Tools
 	template<typename CallBackType>
 	concept is_void_Fn = requires
 	{
-		{ std::is_same_v<typename Fn_Traits<CallBackType>::ReturnType_t, void> };
+		{has_functor <CallBackType>};
+		{ std::is_same_v<void , Fn_Traits<CallBackType>::ReturnType_t > };
 	}; 
+	template<typename CallBackType>
+	concept is_bool_fn = requires
+	{
+		{has_functor <CallBackType>};
+		{ std::is_same_v<bool , Fn_Traits<CallBackType>::ReturnType_t> };
+	};
 
+
+
+	template<typename CallBackType>
+	concept is_empty_void_Fn = requires
+	{
+		{Fn_Traits<CallBackType>::args_Count == 0};
+		{ std::is_same_v< typename Fn_Traits<CallBackType>::ReturnType_t, void> };
+	};
 	template<typename ... Args>
 	constexpr auto make_null_tuple_from_args_v = static_cast<std::tuple<Args...>*>(nullptr);
 

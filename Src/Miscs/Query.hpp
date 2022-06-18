@@ -39,7 +39,7 @@ namespace Query
 					
 				if constexpr (std::is_pointer_v<Type>)
 				{
-					m_oneOf.AddFromComponents<Type>();
+					m_oneOf.AddFromComponents<std::remove_pointer_t<Type>>();
 				}
 				else if (constexpr(std::is_reference_v<Type>))
 				{
@@ -65,15 +65,15 @@ namespace Query
 			using TQuery = T_QType<Component...>;
 			if constexpr (std::is_same_v<TQuery, Must<Components...>>)
 			{
-				m_must.AddFromComponents<Components...>();
+				m_must.AddFromComponents<std::remove_pointer_t<Components...>>();
 			}
 			else if constexpr (std::is_same_v< TQuery, OneOf<Components...>>)
 			{
-				m_oneOf.AddFromComponents<Components...>();
+				m_oneOf.AddFromComponents<std::remove_pointer_t<Components...>>();
 			}
 			else if constexpr (std::is_same_v<TQuery, NoneOf<Components...>>)
 			{
-				m_noneOf.AddFromComponents<Components...>();
+				m_noneOf.AddFromComponents<std::remove_pointer_t<Components...>>();
 			}
 			else
 			{

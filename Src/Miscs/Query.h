@@ -24,4 +24,3 @@ namespace Query
 		void AddQueryFromTuple(std::tuple<Queries...>*) noexcept;
 	};
 }
-#include "Query.hpp"

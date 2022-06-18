@@ -70,7 +70,7 @@ int main()
     
     {
         std::cout << "\033[1m\033[33m" << "\n----- START TEST 02 -----\n" << "\033[0m\033[37m" << std::endl;
-        using info_type = const Component::ComponentInfo*;
+        using info_type = const Component::ComponentInfo* const;
         constexpr auto info_size_v = 3;
 
         std::array< info_type, info_size_v> arr
@@ -114,18 +114,30 @@ int main()
         Archetype::Archetype archetype{ testspan ,bit, *entMgr};
         
        auto entity = entMgr->CreateEntity([](Position& pos) {pos.pos.x = 10; std::cout << pos.pos.x << std::endl; });
-       std::cout << entity.m_uid << std::endl;
+       std::cout << "First entity uid " << entity.m_uid << std::endl;
        Query::Query query;
        query.m_must.AddFromComponents<Entity::Entity>();
-       auto archetypes = entMgr->Search<Scale>();
+       auto archetypes = entMgr->Search<Position>();
        for (auto& archetype : archetypes)
        {
            std::cout << archetype->m_bits.m_bits[0] << std::endl;
        }
-       auto entity1 = entMgr->CreateEntity([](Position& pos) {});
+       auto entity1 = entMgr->CreateEntity();
+       
 
-       entMgr->FindEntity(entity, [](Position& pos) {std::cout << pos.pos.x << std::endl; });
        std::cout << entity1.m_uid << std::endl;
-       // archetype.CreateEntity();
+       auto entity2 = entMgr->CreateEntity<Position>();
+       std::cout << entity2.m_uid << std::endl;
+       entMgr->DeleteEntity(entity);
+       std::cout << entity2.m_uid << std::endl;
+
+       auto entity3 = entMgr->CreateEntity<Position,Scale>();
+       std::cout << entity3.m_uid << std::endl;
+       std::cout << entity3.m_index << std::endl;
+       
+       std::cout <<entity3.m_validation.m_validateID << std::endl;
+       entMgr->FindEntity(entity2, [](Position& pos) {std::cout << pos.pos.x << std::endl; });
+
+       entMgr->Foreach(archetypes, [](Position& pos) {std::cout << pos.pos.x << std::endl; return true; });
     }
 }

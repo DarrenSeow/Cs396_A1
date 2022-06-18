@@ -11,7 +11,7 @@ namespace Archetype
 	struct Archetype final
 	{
 
-		using info_array = std::array<const Component::ComponentInfo* const, ECS_Utility::max_num_of_component_per_entity>;
+		//using info_array = std::array<const Component::ComponentInfo* const, ECS_Utility::max_num_of_component_per_entity>;
 
 		Archetype() = delete;
 
@@ -25,19 +25,21 @@ namespace Archetype
 
 		
 		void UpdateStructuralChange() noexcept;
-		void DestroyEntity(Entity::Entity _entity) noexcept;
+		void DestroyEntity(Entity::Entity& _entity) noexcept;
 
 		template<typename Component>
 		Component& GetComponent(const ECS_Utility::EntityIndex _index) noexcept;
+
+		template<Tools::is_empty_void_Fn Function>
+		void AccessGuard(Function&& _func) noexcept;
 
 		Entity::EntityManager& m_entityMgr;
 		ECS_Tools::Bits m_bits{};
 		std::vector<Entity::Entity> m_entityToDelete{};
 		std::vector<Component::ComponentInfo*> m_infos{};
 		Pool m_componentPool;
-		info_array m_infoData;
 		int m_processRef{ 0 };
+
 	};
 }
 
-#include "Archetype.hpp"

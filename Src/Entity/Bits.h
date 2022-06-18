@@ -11,8 +11,6 @@ namespace ECS_Tools
 		
 		template<typename ... Component>
 		void AddFromComponents() noexcept;
-		std::array<std::int64_t, (ECS_Utility::max_num_of_component - 1) / 64 + 1> m_bits{};
+		std::array<std::int64_t, (ECS_Utility::max_num_of_component - 1) / 64 + 1> m_bits{0};
 	};
 }
-
-#include "Bits.hpp"

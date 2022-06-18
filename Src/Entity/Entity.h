@@ -15,6 +15,7 @@ namespace Entity
 			};
 			constexpr bool operator == (const Validation& V) const noexcept { return m_validateID == V.m_validateID; }
 		};
+		static_assert(sizeof(Validation) == sizeof(ECS_Utility::ValidEntityID));
 		ECS_Utility::EntityID m_uid;
 		struct
 		{
