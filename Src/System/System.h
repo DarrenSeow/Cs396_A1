@@ -8,7 +8,7 @@ namespace System
 {
 	struct ISystem
 	{
-		using query = std::tuple<>;
+		using query = std::tuple<Query::Must<Entity::Entity>>;
 
 		void Update() noexcept {}
 	};
@@ -21,6 +21,6 @@ namespace System
 
 		System(ECS::ECSManager& _gameMgr) noexcept;
 
-		ECS::ECSManager& m_gameMgr;
+		ECS::ECSManager& m_ecsMgr;
 	};
 }

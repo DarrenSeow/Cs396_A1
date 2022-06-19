@@ -19,4 +19,5 @@ namespace Component
 	{
 		(RegisterComponent<Components>(), ...);
 	}
+
 }

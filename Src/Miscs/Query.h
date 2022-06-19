@@ -18,9 +18,29 @@ namespace Query
 
 		bool Compare(const ECS_Tools::Bits& _bits) const noexcept;
 
-		template<Tools::has_functor Function>
-		constexpr void AddQueryFromFunction(Function&&) noexcept;
+		//template<typename Function>
+		//requires Tools::is_callable_v<Function>
+		//template<Tools::has_functor Function>
+		template<typename Function>
+		void AddQueryFromFunction(Function&&) noexcept;
 		template<typename ...Queries>
 		void AddQueryFromTuple(std::tuple<Queries...>*) noexcept;
+
+		template<typename T_Component>
+		void InnerUnpackFromFunction(std::tuple<T_Component>*)
+		{
+			if constexpr (std::is_pointer_v<T_Component>)
+			{
+				m_oneOf.SetBit(Component::ComponentInfo_v<std::remove_pointer_t<T_Component>>.m_uid);
+			}
+			else if constexpr (std::is_reference_v<T_Component>)
+			{
+				m_must.SetBit(Component::ComponentInfo_v<T_Component>.m_uid);
+			}
+			else
+			{
+				static_assert(std::false_type<T_Component>::value, "Wrong query //used");
+			}
+		}
 	};
 }

@@ -30,7 +30,9 @@ namespace Archetype
 		template<typename Component>
 		Component& GetComponent(const ECS_Utility::EntityIndex _index) noexcept;
 
-		template<Tools::is_empty_void_Fn Function>
+		//template<Tools::is_empty_void_Fn Function>
+		template<typename Function>
+		
 		void AccessGuard(Function&& _func) noexcept;
 
 		Entity::EntityManager& m_entityMgr;

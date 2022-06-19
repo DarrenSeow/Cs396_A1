@@ -2,8 +2,8 @@
 
 namespace System
 {
-	System::System(ECS::ECSManager& _gameMgr) noexcept
-		:m_gameMgr{_gameMgr}
+	inline System::System(ECS::ECSManager& _ecsMgr) noexcept
+		:m_ecsMgr{ _ecsMgr }
 	{
 
 	}

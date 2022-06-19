@@ -19,14 +19,16 @@ namespace System
 			{
 				if constexpr (&UserSystem::Update != &System::Update)
 				{
-					System::Update();
+					UserSystem::Update();
 				}
 				else
 				{
-					Query::Query query;
-					query.AddQueryFromTuple(Tools::cast_null_tuple_v<UserSystem::query>);
-					query.AddQueryFromTuple(*this);
-					UserSystem::m_ecsMgr.Foreach(UserSystem.Search(query), *this);
+					Query::Query systemQuery;
+
+					systemQuery.AddQueryFromTuple(Tools::cast_null_tuple_v<UserSystem::query>);
+				
+					systemQuery.AddQueryFromFunction(*this);
+					UserSystem::m_ecsMgr.Foreach(UserSystem::m_ecsMgr.Search(systemQuery),*this);
 				}
 			}
 
@@ -35,16 +37,17 @@ namespace System
 	}
 	template<typename T_System>
 		requires(std::derived_from<T_System, System>)
-	T_System& SystemManager::RegisterSystem(ECS::ECSManager& _escMgr)  noexcept
+	T_System& SystemManager::RegisterSystem(ECS::ECSManager& _ecsMgr)  noexcept
 	{
 		m_systems.push_back(SystemInfo
 			{
-				.m_System = std::make_unique < details::CompletedSystem<T_System>(_ecs),
+				.m_system = std::make_unique < details::CompletedSystem<T_System>>(_ecsMgr),
 				.m_callRun = [](System& _system) noexcept
 			{
-				static_cast<details::CompletedSystem<System>&>(_system).Run();
+				static_cast<details::CompletedSystem<T_System>&>(_system).Run();
 			}
-			});
+			}
+		);
 
 		return *static_cast<T_System*>(m_systems.back().m_system.get());
 
@@ -52,9 +55,9 @@ namespace System
 
 	void SystemManager::Run() noexcept
 	{
-		for (const auto& system : m_systems)
+		for (const auto& systeminfo : m_systems)
 		{
-			system.m_callRun(*system.m_system.get());
+			systeminfo.m_callRun(*systeminfo.m_system.get());
 		}
 	}
 }

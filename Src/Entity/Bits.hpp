@@ -30,6 +30,6 @@ namespace ECS_Tools
 	template<typename ... Component>
 	void Bits::AddFromComponents() noexcept
 	{
-		((SetBit(Component::ComponentInfo_v<Component>.m_uid)), ...);
+		(SetBit(Component::ComponentInfo_v<Component>.m_uid), ...);
 	}
 }

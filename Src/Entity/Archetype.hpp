@@ -58,11 +58,13 @@ namespace Archetype
 	{
 		return m_componentPool.GetComponent<Component>(_index);
 	}
-	template<Tools::is_empty_void_Fn Function>
+	//template<Tools::is_empty_void_Fn Function>
+	template<typename Function>
 	inline void Archetype::AccessGuard(Function&& _func) noexcept
 	{
 		++m_processRef;
-		_func;
+		
+		_func();
 		if (--m_processRef == 0) UpdateStructuralChange();
 	}
 }

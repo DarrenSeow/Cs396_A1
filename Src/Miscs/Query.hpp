@@ -27,43 +27,31 @@ namespace Query
 		assert(!(!a && c));
 		return !a || c;
 	}
-	template<Tools::has_functor Function>
-	constexpr void Query::AddQueryFromFunction(Function&&) noexcept
+	//template<typename Function>
+		//requires Tools::is_callable_v<Function>
+	//template<Tools::has_functor Function>
+	template<typename Function>
+	void Query::AddQueryFromFunction(Function&&) noexcept
 	{
-		[&] <typename ...TuplesArgs>(std::tuple<TuplesArgs... >>* )
+		using args = Tools::Fn_Traits<Function>::Args_Tuple;
+		
+
+		[&] <typename ...TuplesArgs>(std::tuple<TuplesArgs... > *) noexcept
 		{
-
-			(
-				[&]<typename Type>(std::tuple<Type>*)
-				{
-					
-				if constexpr (std::is_pointer_v<Type>)
-				{
-					m_oneOf.AddFromComponents<std::remove_pointer_t<Type>>();
-				}
-				else if (constexpr(std::is_reference_v<Type>))
-				{
-					m_must.AddFromComponents<Type>();
-				}
-				else
-				{
-					static_assert(false,"not enough info");
-				}
-				}(Tools::make_null_tuple_from_args_v<TuplesArgs>)
-
-			, ...);
-
 			
-		}(Tools::cast_null_tuple_v<Tools::Fn_Traits<Function>::Parameters_t>);
+			(InnerUnpackFromFunction(Tools::make_null_tuple_from_args_v<TuplesArgs>), ...);
+
+		}(Tools::cast_null_tuple_v<args>);
+
 	}
 
 	template<typename ... Queries>
 	void Query::AddQueryFromTuple(std::tuple<Queries...>*) noexcept
 	{
-		([&]template<typename...>class T_QType, typename... Components > (QType<Components...>*)
+		([&]<template<typename...>class T_QType, typename... Components > (T_QType<Components...>*)
 		{
-			using TQuery = T_QType<Component...>;
-			if constexpr (std::is_same_v<TQuery, Must<Components...>>)
+			using TQuery = T_QType<Components...>;
+			if constexpr  (std::is_same_v<TQuery, Must<Components...>>)
 			{
 				m_must.AddFromComponents<std::remove_pointer_t<Components...>>();
 			}
@@ -77,9 +65,9 @@ namespace Query
 			}
 			else
 			{
-				static_assert(false, "Wrong query used");
+				static_assert(std::false_type<TQuery>::value, "Wrong query used");
 			}
-		}(cast_null_tuple_v<Queries>)
+		}(Tools::cast_null_tuple_v<Queries>)
 		, ...);
 	}
 }

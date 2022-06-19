@@ -26,12 +26,12 @@ namespace Entity
 
 		//template<Tools::is_bool_fn Function>
 		template<typename Function>
-		requires std::is_same_v<bool, typename Tools::Fn_Traits<Function>::ReturnType_t> && Tools::has_functor<Function>
+		requires (Tools::has_functor<Function> && std::is_same_v<bool, typename Tools::Fn_Traits<Function>::ReturnType_t>)
 		void Foreach(const std::vector<Archetype::Archetype*>& _archetypeList, Function&& _func) const noexcept;
 
 		//template<Tools::is_void_Fn Function>
 		template<typename Function>
-			requires  std::is_same_v<void, typename Tools::Fn_Traits<Function>::ReturnType_t>&& Tools::has_functor<Function>
+			requires (Tools::has_functor<Function>&& std::is_same_v<void, typename Tools::Fn_Traits<Function>::ReturnType_t>)
 		void Foreach(const std::vector<Archetype::Archetype*> _list, Function&& _func) const noexcept;
 		//template<Tools::is_void_Fn CallBackType>
 		template<typename CallBackType>
@@ -39,6 +39,8 @@ namespace Entity
 		Entity CreateEntity(CallBackType&& _function) noexcept;
 		template<typename... Components>
 		Entity CreateEntity() noexcept;
+
+
 		//template<Tools::is_void_Fn CallBackType>
 		template<typename CallBackType>
 			requires  std::is_same_v<void, typename Tools::Fn_Traits<CallBackType>::ReturnType_t>

@@ -53,91 +53,49 @@ struct Rotation
 {
     float m_rz = 45.f;
 };
-void fn() {};
+
+struct TestSystem : System::System
+{
+    void operator()(Position& _pos/*, Scale* _scale*/)
+    {
+        _pos.pos.x += 10;
+        std::cout << "Hello" << _pos.pos.x << std::endl;
+
+        //_scale->m_sx += 10;
+        //std::cout << "scale" << _scale->m_sx << std::endl;
+    }
+    //void Update() noexcept
+    //{
+    //    std::cout << "system check" << std::endl;
+    //}
+};
 int main()
 {
+    ECS::ECSManager ecsMgr;
 	std::cout << Component::ComponentInfo_v<Rotation>.m_uid << std::endl;
 
-	std::unique_ptr<Component::ComponentManager> m_compMgr = std::make_unique<Component::ComponentManager>();
-
-    m_compMgr->RegisterComponents<Entity::Entity>();
+	
+    //ecsMgr.RegisterComponents<Entity::Entity>();
     std::cout << Component::ComponentInfo_v<Entity::Entity>.m_uid << std::endl;
-	m_compMgr->RegisterComponents<Rotation, Scale, Position>();
+    ecsMgr.RegisterComponents<Rotation, Scale, Position>();
 
 	std::cout << Component::ComponentInfo_v<Rotation>.m_uid << std::endl;
+	std::cout << Component::ComponentInfo_v<Position>.m_uid << std::endl;
 	
 	std::cout << Component::ComponentInfo_v<Scale>.m_uid << std::endl;
     
-    {
-        std::cout << "\033[1m\033[33m" << "\n----- START TEST 02 -----\n" << "\033[0m\033[37m" << std::endl;
-        using info_type = const Component::ComponentInfo* const;
-        constexpr auto info_size_v = 3;
-
-        std::array< info_type, info_size_v> arr
-        {
-            &Component::ComponentInfo_v< Rotation >,
-            &Component::ComponentInfo_v< Scale >,
-            &Component::ComponentInfo_v< Position >
-        };
-        auto testspan = std::span< info_type >{ arr.data(), arr.size() };
-        Archetype::Pool poolInst{ std::span< info_type >{ arr.data(), arr.size()} };
-        
-
-        const auto index = poolInst.Append();
-        const auto index2 = poolInst.Append();
-        const auto index3 = poolInst.Append();
-
-        std::cout << "Finding Scale Component in pool ... " << std::endl;
-        const std::int32_t findCompIndex = poolInst.FindComponentIndexFromUID(arr[1]->m_uid);
-
-        findCompIndex > 0 ?
-            std::cout << "Found at " << findCompIndex << std::endl :
-            std::cout << "Component not found." << std::endl;
-
-       // auto& comp1 = poolInst.GetComponent< Vector2D >(index); // Test assert
-       auto& comp = poolInst.GetComponent< Rotation >(index);
-
-        std::cout
-            << "Rotation uid: "
-            << Component::ComponentInfo_v < decltype(comp) >.m_uid
-            << std::endl; // shld be 1 (order of registration)
-
-        std::cout << "Rotation along z-axis: " << comp.m_rz << std::endl;
-        
-        poolInst.Delete(index);
-        std::cout << "\033[1m\033[33m" << "\n----- END TEST -----\n" << "\033[0m\033[37m" << std::endl;
-
-        ECS_Tools::Bits bit;
-        bit.AddFromComponents<Scale>();
-        std::unique_ptr<Entity::EntityManager> entMgr = std::make_unique<Entity::EntityManager>();
-
-        Archetype::Archetype archetype{ testspan ,bit, *entMgr};
-        
-       auto entity = entMgr->CreateEntity([](Position& pos) {pos.pos.x = 10; std::cout << pos.pos.x << std::endl; });
-       std::cout << "First entity uid " << entity.m_uid << std::endl;
-       Query::Query query;
-       query.m_must.AddFromComponents<Entity::Entity>();
-       auto archetypes = entMgr->Search<Position>();
-       for (auto& archetype : archetypes)
-       {
-           std::cout << archetype->m_bits.m_bits[0] << std::endl;
-       }
-       auto entity1 = entMgr->CreateEntity();
-       
-
-       std::cout << entity1.m_uid << std::endl;
-       auto entity2 = entMgr->CreateEntity<Position>();
-       std::cout << entity2.m_uid << std::endl;
-       entMgr->DeleteEntity(entity);
-       std::cout << entity2.m_uid << std::endl;
-
-       auto entity3 = entMgr->CreateEntity<Position,Scale>();
-       std::cout << entity3.m_uid << std::endl;
-       std::cout << entity3.m_index << std::endl;
-       
-       std::cout <<entity3.m_validation.m_validateID << std::endl;
-       entMgr->FindEntity(entity2, [](Position& pos) {std::cout << pos.pos.x << std::endl; });
-
-       entMgr->Foreach(archetypes, [](Position& pos) {std::cout << pos.pos.x << std::endl; return true; });
-    }
+    ecsMgr.RegisterSystems<TestSystem>();
+    Query::Query query;
+    ECS_Tools::Bits bit;
+    bit.SetBit(Component::ComponentInfo_v<Position>.m_uid);
+    //auto ent1 = ecsMgr.CreateEntity<Position, Scale>();
+    ecsMgr.CreateEntity<Position>();
+    //query.AddQueryFromFunction([](Position&,Scale*) {});
+    std::tuple<Query::Must<Position>> testquery;
+    
+    query.AddQueryFromTuple(&testquery);
+    Entity::EntityManager entityMgr;
+    //ecsMgr.FindEntity(ent1, [](Position& _pos) {std::cout << "template" << std::endl; });
+    ecsMgr.Foreach(ecsMgr.Search(query),[](Position& _pos) {std::cout << "hello world" << _pos.pos.x << std::endl; });
+    ecsMgr.Run();
 }
