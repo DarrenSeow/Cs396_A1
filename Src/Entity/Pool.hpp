@@ -1,6 +1,12 @@
-#include "Pool.h"
-#pragma once
 
+#pragma once
+/******************************************************************************
+filename: Pool.h
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the defintion of Pool that contains the components data
+******************************************************************************/
 namespace Archetype
 {
     inline Pool::Pool(std::span<const Component::ComponentInfo* const> _infos)

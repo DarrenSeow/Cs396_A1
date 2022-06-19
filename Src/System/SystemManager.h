@@ -1,5 +1,11 @@
 #pragma once
-
+/******************************************************************************
+filename: SystemManager.h
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the declaration of System Manager and SystemInfo class
+******************************************************************************/
 
 namespace System
 {

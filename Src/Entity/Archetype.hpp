@@ -1,4 +1,11 @@
-#include "Archetype.h"
+/******************************************************************************
+filename: Archetype.hpp
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the definition of Archetype function
+******************************************************************************/
+
 namespace Archetype
 {
 	Archetype::Archetype(const std::span<const Component::ComponentInfo* const >& _infos,	const ECS_Tools::Bits& _bits,

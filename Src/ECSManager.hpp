@@ -1,12 +1,19 @@
-#include "ECSManager.h"
+
 #pragma once
 
+/******************************************************************************
+filename: ECSManager.hpp
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the defintion of ECSManager that manages the 3 other managers
+******************************************************************************/
 namespace ECS
 {
 	ECSManager::ECSManager() noexcept :
 		m_entityMgr{std::make_unique<Entity::EntityManager>()},
-		m_componentMgr{std::make_unique<Component::ComponentManager>()}//,
-		//m_systemMgr{std::make_unique<System::SystemManager>()}
+		m_componentMgr{std::make_unique<Component::ComponentManager>()},
+		m_systemMgr{std::make_unique<System::SystemManager>()}
 	{
 		m_componentMgr->RegisterComponent<Entity::Entity>();
 	}
@@ -62,7 +69,7 @@ namespace ECS
 	}
 	inline void ECSManager::Run() noexcept
 	{
-		m_systemMgr.Run();
+		m_systemMgr->Run();
 	}
 	template<typename ...Components>
 	inline void ECSManager::RegisterComponents() noexcept
@@ -73,6 +80,6 @@ namespace ECS
 		requires (std::derived_from<T_Systems, System::System> && ...)
 	inline void ECSManager::RegisterSystems() noexcept
 	{
-		(m_systemMgr.RegisterSystem<T_Systems>(*this),...);
+		(m_systemMgr->RegisterSystem<T_Systems>(*this),...);
 	}
 }

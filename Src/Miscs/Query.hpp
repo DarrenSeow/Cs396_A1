@@ -1,5 +1,11 @@
 #pragma once
-
+/******************************************************************************
+filename: Query.hpp
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the definition of Query function
+******************************************************************************/
 namespace Query
 {
 	bool Query::Compare(const ECS_Tools::Bits& _bits) const noexcept

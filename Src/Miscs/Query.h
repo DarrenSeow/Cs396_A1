@@ -1,5 +1,11 @@
 #pragma once
-
+/******************************************************************************
+filename: Query.h
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the declaration of Query
+******************************************************************************/
 namespace Query
 {
 	template<typename... Component>

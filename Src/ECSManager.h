@@ -1,13 +1,19 @@
 #pragma once
-
+/******************************************************************************
+filename: ECSManager.h
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the declaration of ECSManager that manages the 3 other managers
+******************************************************************************/
 namespace ECS
 {
 	class ECSManager
 	{
 		std::unique_ptr<Entity::EntityManager> m_entityMgr;
 		std::unique_ptr<Component::ComponentManager> m_componentMgr;
-		//std::unique_ptr<System::SystemManager> m_systemMgr;
-		System::SystemManager m_systemMgr;
+		std::unique_ptr<System::SystemManager> m_systemMgr;
+		//System::SystemManager m_systemMgr;
 	public:
 		ECSManager() noexcept;
 

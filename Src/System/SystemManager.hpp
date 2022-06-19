@@ -1,5 +1,11 @@
 #pragma once
-
+/******************************************************************************
+filename: SystemManager.h[[
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the Definition of System and ISystem class
+******************************************************************************/
 namespace System
 {
 	namespace details
@@ -8,17 +14,19 @@ namespace System
 		requires( std::derived_from<UserSystem, System>)
 		struct CompletedSystem final : UserSystem
 		{
-			CompletedSystem(ECS::ECSManager& _ecsMgr) noexcept :
+			__inline CompletedSystem(ECS::ECSManager& _ecsMgr) noexcept :
 				UserSystem{ _ecsMgr }
 			{
 
 			}
 			CompletedSystem() noexcept = delete;
 
-			void Run() noexcept
+			__inline void Run() noexcept
 			{
+				//if constexpr (&UserSystem::Update != &System::Update)
 				if constexpr (&UserSystem::Update != &System::Update)
 				{
+
 					UserSystem::Update();
 				}
 				else

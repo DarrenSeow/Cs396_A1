@@ -1,6 +1,12 @@
 #pragma once
 
-
+/******************************************************************************
+filename: ComponentInfo.h
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1 
+Description:
+Contains the definition of ComponentInfo and type erasure of it
+******************************************************************************/
 namespace Component
 {
 	class ComponentInfo final

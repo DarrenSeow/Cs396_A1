@@ -1,5 +1,11 @@
 #pragma once
-
+/******************************************************************************
+filename: Bits.h
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the declartion of bits function
+******************************************************************************/
 
 namespace ECS_Tools
 {

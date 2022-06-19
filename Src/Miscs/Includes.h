@@ -1,3 +1,10 @@
+/******************************************************************************
+filename: Includes.h
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains includes needed
+******************************************************************************/
 #pragma once
 #include <Windows.h>
 #include <array>

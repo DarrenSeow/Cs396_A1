@@ -79,11 +79,16 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4201</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>..\..\dependencies\freeglut\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\dependencies\freeglut_lib_bin\lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST ..\..\dependencies\freeglut_lib_bin\bin\freeglutd.dll\ (xcopy /Q /E /Y /I ..\..\dependencies\freeglut_lib_bin\bin\freeglutd.dll bin\Debug &gt; nul) ELSE (xcopy /Q /Y /I ..\..\dependencies\freeglut_lib_bin\bin\freeglutd.dll bin\Debug &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -96,13 +101,18 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4201</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>..\..\dependencies\freeglut\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\dependencies\freeglut_lib_bin\lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST \..\..\dependencies\freeglut_lib_bin\bin\freeglut.dll\ (xcopy /Q /E /Y /I \..\..\dependencies\freeglut_lib_bin\bin\freeglut.dll bin\Release &gt; nul) ELSE (xcopy /Q /Y /I \..\..\dependencies\freeglut_lib_bin\bin\freeglut.dll bin\Release &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -113,11 +123,16 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4201</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>..\..\dependencies\freeglut\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\dependencies\freeglut_lib_bin\lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST ..\..\dependencies\freeglut_lib_bin\bin\freeglutd.dll\ (xcopy /Q /E /Y /I ..\..\dependencies\freeglut_lib_bin\bin\freeglutd.dll x64\Debug &gt; nul) ELSE (xcopy /Q /Y /I ..\..\dependencies\freeglut_lib_bin\bin\freeglutd.dll x64\Debug &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -130,16 +145,23 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4201</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>..\..\dependencies\freeglut\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\dependencies\freeglut_lib_bin\lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST ..\..\dependencies\freeglut_lib_bin\bin\freeglut.dll\ (xcopy /Q /E /Y /I ..\..\dependencies\freeglut_lib_bin\bin\freeglut.dll x64\Release &gt; nul) ELSE (xcopy /Q /Y /I ..\..\dependencies\freeglut_lib_bin\bin\freeglut.dll x64\Release &gt; nul)
+IF EXIST ..\..\dependencies\freeglut_lib_bin\bin\freeglutd.dll\ (xcopy /Q /E /Y /I ..\..\dependencies\freeglut_lib_bin\bin\freeglutd.dll x64\Release &gt; nul) ELSE (xcopy /Q /Y /I ..\..\dependencies\freeglut_lib_bin\bin\freeglutd.dll x64\Release &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Src\main.cpp" />
+    <ClCompile Include="..\..\Src\Math\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Src\Component\ComponentInfo.h" />
@@ -156,6 +178,7 @@
     <ClInclude Include="..\..\Src\Entity\Entity.h" />
     <ClInclude Include="..\..\Src\Entity\EntityManager.h" />
     <ClInclude Include="..\..\Src\Entity\Pool.hpp" />
+    <ClInclude Include="..\..\Src\Math\Vector2D.h" />
     <ClInclude Include="..\..\Src\Miscs\Includes.h" />
     <ClInclude Include="..\..\Src\Miscs\Query.h" />
     <ClInclude Include="..\..\Src\Miscs\Query.hpp" />

@@ -1,4 +1,10 @@
-
+/******************************************************************************
+filename: EntityManager.hpp
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the definition of EntityManager
+******************************************************************************/
 namespace Entity
 {
 	inline Archetype::Archetype& EntityManager::GetOrCreateArchetype(std::span < const Component::ComponentInfo* const> _span) noexcept
@@ -162,10 +168,12 @@ namespace Entity
 					{
 						if ([&]<typename ... Components>(std::tuple<Components...>*) constexpr noexcept
 						{
-							return _func([&]<typename T>(std::tuple<T>*) constexpr noexcept ->T
+							return 	_func([&]<typename T>() constexpr noexcept -> T
 							{
-								auto& myPointer = CachePointers[Tools::TupleToIndex_v<T, Components...>];
-								if constexpr(std::is_pointer_v<T>)
+
+								auto index = Tools::tuple_to_index_v<T, typename func_traits::Args_Tuple>;
+								auto& myPointer = CachePointers[index];
+								if constexpr (std::is_pointer_v<T>)
 								{
 									if (myPointer == nullptr)
 									{
@@ -182,7 +190,7 @@ namespace Entity
 								{
 									return reinterpret_cast<T>(*p);
 								}
-							}(Tools::make_null_tuple_from_args_v<Components>)...);
+							}.operator() < Components > ()...);
 						}(Tools::cast_null_tuple_v<func_traits::Args_Tuple>))
 						{
 							skip = true;
@@ -204,7 +212,6 @@ namespace Entity
 		for (const auto& archetype : _archetypeList)
 		{
 			const auto& pool = archetype->m_componentPool;
-			std::cout << "archebits " <<archetype->m_bits.m_bits[0] <<std::endl;
 			auto CachePointers = [&]<typename...Components>(std::tuple<Components...>*) constexpr noexcept
 			{
 				return std::array
@@ -212,7 +219,7 @@ namespace Entity
 					[&] <typename T>(std::tuple<T>*) constexpr noexcept
 					{
 						const auto index = pool.FindComponentIndexFromUID(Component::ComponentInfo_v<T>.m_uid);
-						std::cout << "pool " <<index << std::endl;
+					
 						if constexpr (std::is_pointer_v<T>) return (index < 0) ? nullptr : pool.m_componentPools[index];
 						else								return pool.m_componentPools[index];
 					}(Tools::make_null_tuple_from_args_v<Components>)
@@ -227,10 +234,10 @@ namespace Entity
 					
 					for (ECS_Utility::EntityIndex i = pool.Size(); i; --i)
 					{
-						std::cout << (typeid(typename func_traits::Args_Tuple).name()) << std::endl;
+						//std::cout << (typeid(typename func_traits::Args_Tuple).name()) << std::endl;
 						[&]<typename ... Components>(std::tuple<Components...>*) constexpr noexcept
 						{
-							;
+							
 							_func([&]<typename T>() constexpr noexcept -> T
 							{
 					

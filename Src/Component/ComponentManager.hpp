@@ -1,5 +1,11 @@
 #pragma once
-
+/******************************************************************************
+filename: ComponentManager.hpp
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the definition of ComponentManager function
+******************************************************************************/
 
 namespace Component
 {

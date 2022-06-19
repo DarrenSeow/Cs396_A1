@@ -1,5 +1,11 @@
 #pragma once
-
+/******************************************************************************
+filename: Entity.h
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the declaration of Entity and EntityRecord function
+******************************************************************************/
 
 namespace Entity
 {

@@ -1,4 +1,11 @@
 #pragma once
+/******************************************************************************
+filename: Tools.h
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the declaration of Tools of meta programming
+******************************************************************************/
 namespace Tools
 {
 	namespace details

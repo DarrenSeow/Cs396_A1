@@ -1,5 +1,12 @@
 #pragma once
-
+/******************************************************************************
+filename: Pool.h
+author: Seow Jun Hao Darren seow.j@digipen.edu
+Project: Cs396_A1
+Description:
+Contains the declaration of Pool where archetype will keep this to handle
+its component data
+******************************************************************************/
 namespace Archetype
 {
 	class Pool final

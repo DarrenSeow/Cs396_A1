@@ -13,9 +13,15 @@
     <Filter Include="System">
       <UniqueIdentifier>{f802c91b-7448-42a1-aae6-c81bb42cb57d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{ee48de9c-6ccb-4fc4-8099-a85c21b25207}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Src\main.cpp" />
+    <ClCompile Include="..\..\Src\Math\Vector2D.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Src\Component\ComponentInfo.h">
@@ -83,5 +89,8 @@
       <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Src\ECSManager.hpp" />
+    <ClInclude Include="..\..\Src\Math\Vector2D.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
